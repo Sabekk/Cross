@@ -40,6 +40,7 @@ public class Cross : MonoBehaviour
     public void SpawnButtons()
     {
         int buttonsCount = (int)(widthCross * heightCross);
+        int buttonsDisabled = (int)(buttonsCount * 0.1f);
 
         for (int i = 0; i < buttonsCount; i++)
         {

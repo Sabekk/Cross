@@ -10,19 +10,19 @@ public class Cross : MonoBehaviour
     public InputField inputFieldX;
     public InputField inputFieldY;
 
-    public float widthCross;
-    public float heightCross;
+    public int widthCross;
+    public int heightCross;
 
-    public ButtonsHolder buttonsHolder;
+    public Grid buttonsHolder;
 
 
     public void ChangeCrossWidth()
     {
-        widthCross = float.Parse(inputFieldX.text);
+        widthCross = int.Parse(inputFieldX.text);
     }
     public void ChangeCrossHeight()
     {
-        heightCross = float.Parse(inputFieldY.text);
+        heightCross = int.Parse(inputFieldY.text);
     }
 
     public void GenerateCross()
@@ -34,17 +34,6 @@ public class Cross : MonoBehaviour
             buttonsHolder.ClearHolder();
         }
 
-        SpawnButtons();
-    }
-
-    public void SpawnButtons()
-    {
-        int buttonsCount = (int)(widthCross * heightCross);
-        int buttonsDisabled = (int)(buttonsCount * 0.1f);
-
-        for (int i = 0; i < buttonsCount; i++)
-        {
-            Instantiate(crossButton, buttonsHolder.transform);
-        }
+        buttonsHolder.SpawnButtons(widthCross, heightCross);
     }
 }

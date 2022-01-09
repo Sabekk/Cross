@@ -7,12 +7,13 @@ public class Pathfinding : MonoBehaviour {
 
 
     private const int straight_cost = 10;
-    private const int diagonal_cost = 10;
+    private const int diagonal_cost = 14;
 
     public Grid grid;
     public Cross cross;
     public List<CrossButton> openList;
     public List<CrossButton> closedList;
+    public List<CrossButton> neighbourList = new List<CrossButton>();
     public List<CrossButton> FindPath(CrossButton startPosition, CrossButton endPosition)
     {
         openList = new List<CrossButton> { startPosition };
@@ -32,8 +33,9 @@ public class Pathfinding : MonoBehaviour {
 
         while (openList.Count > 0)
         {
-            Debug.Log("Test");
             CrossButton curretPosition = GetLowestFCostPosition(openList);
+            Debug.Log("curretPosition pos: " + curretPosition.posX + " , " + curretPosition.posY);
+
             if (curretPosition == endPosition)
             {
                 return CalculatedPath(endPosition);
@@ -44,7 +46,6 @@ public class Pathfinding : MonoBehaviour {
 
             foreach (CrossButton neighbour in GetNeighbourList(curretPosition))
             {
-                Debug.Log("Test2");
                 if (closedList.Contains(neighbour))
                 {
                     continue;
@@ -55,8 +56,9 @@ public class Pathfinding : MonoBehaviour {
                 //    continue;
                 //}
 
+                Debug.Log("neighbour pos: " + neighbour.posX + " , " + neighbour.posY);
+
                 int tentativeGCost = curretPosition.gCost + CalculateDistance(curretPosition, neighbour);
-                Debug.Log(neighbour.gCost+", " + tentativeGCost);
 
                 if (tentativeGCost < neighbour.gCost)
                 {
@@ -68,7 +70,6 @@ public class Pathfinding : MonoBehaviour {
 
                 if (!openList.Contains(neighbour))
                 {
-                    Debug.Log("Test1");
                     openList.Add(neighbour);
                 }
             }
@@ -78,8 +79,8 @@ public class Pathfinding : MonoBehaviour {
 
     public List<CrossButton> GetNeighbourList(CrossButton curretPosition)
     {
-        List<CrossButton> neighbourList = new List<CrossButton>();
-        Debug.Log(curretPosition.posX + ", " + curretPosition.posY);
+        neighbourList.Clear();
+        Debug.Log("Curret position to neigbers: " + curretPosition.posX + ", " + curretPosition.posY);
 
         if (curretPosition.posX - 1 >= 0)
         {

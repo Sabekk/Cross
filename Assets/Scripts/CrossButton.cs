@@ -48,9 +48,6 @@ public class CrossButton : MonoBehaviour
         posX = x;
         posY = y;
         isAvalilable = true;
-        gCost = 0;
-        hCost = 0;
-        fCost = 0;
         cameFrom = null;
     }
 

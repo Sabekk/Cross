@@ -44,16 +44,6 @@ public class Grid : MonoBehaviour {
 
     public void SetButton(CrossButton button)
     {
-        CrossButton tmp;
-        if(buttonsDictionary.TryGetValue(button.GetPosition(), out tmp))
-        {
-            Debug.Log("Jest");
-        }
-        else
-        {
-            Debug.Log("Nie ma");
-        }
-
         if (startButton == null)
         {
             startButton = button;
@@ -73,7 +63,7 @@ public class Grid : MonoBehaviour {
                 {
                     endButton = button;
                     endButton.SetColor(selectedEndColor);
-                    path = pathfinding.FindPath(startButton.posX, startButton.posY, endButton.posX, endButton.posY);
+                    path = pathfinding.FindPath(startButton, endButton);
                 }
                 else
                 {
@@ -103,7 +93,8 @@ public class Grid : MonoBehaviour {
                 CrossButton spawnedButton = crossButton;
                 spawnedButton.SetButtonValues(this, i, j);
                 Instantiate(spawnedButton, transform);
-                buttonsDictionary.Add(spawnedButton.GetPosition(), spawnedButton);
+                var key = new Tuple<int, int>(spawnedButton.posX, spawnedButton.posY);
+                buttonsDictionary.Add(key, spawnedButton);
             }
         }
     }
@@ -119,10 +110,10 @@ public class Grid : MonoBehaviour {
 
     public CrossButton GetButton(int x, int y)
     {
-        CrossButton button = null;
-        int[] position = { x, y };
+        CrossButton button;
+        var key = new Tuple<int, int>(x, y);
 
-        if (buttonsDictionary.TryGetValue(position, out button))
+        if (buttonsDictionary.TryGetValue(key, out button))
         {
             return button;
         }

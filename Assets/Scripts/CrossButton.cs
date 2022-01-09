@@ -30,12 +30,12 @@ public class CrossButton : MonoBehaviour
         fCost = gCost + hCost;
     }
 
-    public int[] GetPosition()
-    {
-        int[] position = { posX, posY };
+    //public int[] GetPosition()
+    //{
+    //    int[] position = { posX, posY };
 
-        return position;
-    }
+    //    return position;
+    //}
 
     public void SetButtonOnGrid()
     {
@@ -48,6 +48,10 @@ public class CrossButton : MonoBehaviour
         posX = x;
         posY = y;
         isAvalilable = true;
+        gCost = 0;
+        hCost = 0;
+        fCost = 0;
+        cameFrom = null;
     }
 
     public void SetColor(Color newColor)

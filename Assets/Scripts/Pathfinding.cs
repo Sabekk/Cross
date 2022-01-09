@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pathfinding : MonoBehaviour {
 
@@ -10,31 +11,20 @@ public class Pathfinding : MonoBehaviour {
 
     public Grid grid;
     public Cross cross;
-    List<CrossButton> openList;
-    List<CrossButton> closedList;
-
-    public List<CrossButton> FindPath(int startX, int startY, int endX, int endY)
+    public List<CrossButton> openList;
+    public List<CrossButton> closedList;
+    public List<CrossButton> FindPath(CrossButton startPosition, CrossButton endPosition)
     {
-        CrossButton startPosition = grid.startButton;
-        CrossButton endPosition = grid.endButton;
-
         openList = new List<CrossButton> { startPosition };
         closedList = new List<CrossButton>();
 
         foreach (var item in grid.buttonsDictionary.Values)
         {
+            if (item == startPosition) continue;
             item.gCost = int.MaxValue;
             item.CalculateFCost();
             item.cameFrom = null;
         }
-
-
-        //for (int i = 0; i < grid.buttonsList.Count; i++)
-        //{
-        //    grid.buttonsList[i].gCost = int.MaxValue;
-        //    grid.buttonsList[i].CalculateFCost();
-        //    grid.buttonsList[i].cameFrom = null;
-        //}
 
         startPosition.gCost = 0;
         startPosition.hCost = CalculateDistance(startPosition, endPosition);
@@ -42,6 +32,7 @@ public class Pathfinding : MonoBehaviour {
 
         while (openList.Count > 0)
         {
+            Debug.Log("Test");
             CrossButton curretPosition = GetLowestFCostPosition(openList);
             if (curretPosition == endPosition)
             {
@@ -53,17 +44,19 @@ public class Pathfinding : MonoBehaviour {
 
             foreach (CrossButton neighbour in GetNeighbourList(curretPosition))
             {
+                Debug.Log("Test2");
                 if (closedList.Contains(neighbour))
                 {
                     continue;
                 }
-                if (!neighbour.isAvalilable)
-                {
-                    closedList.Add(neighbour);
-                    continue;
-                }
+                //if (!neighbour.isAvalilable)
+                //{
+                //    closedList.Add(neighbour);
+                //    continue;
+                //}
 
                 int tentativeGCost = curretPosition.gCost + CalculateDistance(curretPosition, neighbour);
+                Debug.Log(neighbour.gCost+", " + tentativeGCost);
 
                 if (tentativeGCost < neighbour.gCost)
                 {
@@ -75,6 +68,7 @@ public class Pathfinding : MonoBehaviour {
 
                 if (!openList.Contains(neighbour))
                 {
+                    Debug.Log("Test1");
                     openList.Add(neighbour);
                 }
             }
@@ -85,6 +79,7 @@ public class Pathfinding : MonoBehaviour {
     public List<CrossButton> GetNeighbourList(CrossButton curretPosition)
     {
         List<CrossButton> neighbourList = new List<CrossButton>();
+        Debug.Log(curretPosition.posX + ", " + curretPosition.posY);
 
         if (curretPosition.posX - 1 >= 0)
         {
@@ -113,13 +108,12 @@ public class Pathfinding : MonoBehaviour {
         }
         if (curretPosition.posY - 1 >= 0)
         {
-            neighbourList.Add(grid.GetButton(curretPosition.posX, curretPosition.posY + 1));
-        }
-        if (curretPosition.posY + 1 < 0)
-        {
             neighbourList.Add(grid.GetButton(curretPosition.posX, curretPosition.posY - 1));
         }
-
+        if (curretPosition.posY + 1 < cross.heightCross)
+        {
+            neighbourList.Add(grid.GetButton(curretPosition.posX, curretPosition.posY + 1));
+        }
 
         return neighbourList;
     }
@@ -150,7 +144,7 @@ public class Pathfinding : MonoBehaviour {
     public CrossButton GetLowestFCostPosition(List<CrossButton> positions)
     {
         CrossButton lowestFCostPosition = positions[0];
-        for (int i = 0; i < positions.Count; i++)
+        for (int i = 1; i < positions.Count; i++)
         {
             if (positions[i].fCost < lowestFCostPosition.fCost)
             {

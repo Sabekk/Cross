@@ -60,6 +60,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f8bce54e060e144da0b414fe455524f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gCost: 0
+  hCost: 0
+  fCost: 0
+  grid: {fileID: 0}
+  posX: 0
+  posY: 0
+  isAvalilable: 0
+  cameFrom: {fileID: 0}
+  buttonImage: {fileID: 1884839334953111932}
 --- !u!114 &1884839334953111932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +142,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1884839334953111932}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1041200825072168939}
+        m_TargetAssemblyTypeName: CrossButton, Assembly-CSharp
+        m_MethodName: SetButtonOnGrid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1884839336315394818
 GameObject:
   m_ObjectHideFlags: 0

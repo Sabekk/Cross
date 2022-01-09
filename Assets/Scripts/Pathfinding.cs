@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour {
 
+
     private const int straight_cost = 10;
     private const int diagonal_cost = 10;
 
-    Grid grid;
-    Cross cross;
+    public Grid grid;
+    public Cross cross;
     List<CrossButton> openList;
     List<CrossButton> closedList;
-    private List<CrossButton> FindPath(int startX, int startY, int endX, int endY)
+
+    public List<CrossButton> FindPath(int startX, int startY, int endX, int endY)
     {
         CrossButton startPosition = grid.startButton;
         CrossButton endPosition = grid.endButton;
@@ -53,6 +55,11 @@ public class Pathfinding : MonoBehaviour {
             {
                 if (closedList.Contains(neighbour))
                 {
+                    continue;
+                }
+                if (!neighbour.isAvalilable)
+                {
+                    closedList.Add(neighbour);
                     continue;
                 }
 
@@ -127,6 +134,8 @@ public class Pathfinding : MonoBehaviour {
             path.Add(curretPosition.cameFrom);
             curretPosition = curretPosition.cameFrom;
         }
+        path.Reverse();
+        return path;
     }
 
     public int CalculateDistance(CrossButton a, CrossButton b)

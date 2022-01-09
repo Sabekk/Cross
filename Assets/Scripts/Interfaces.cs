@@ -7,7 +7,7 @@ public interface IButton {
     public Grid grid { get; set; }
     public int posX { get; set; }
     public int posY { get; set; }
-    public bool avalilable { get; set; }
+    public bool isAvalilable { get; set; }
 
     public int gCost { get; set; }
     public int hCost { get; set; }

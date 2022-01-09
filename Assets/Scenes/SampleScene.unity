@@ -865,10 +865,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5076d1bb253d94191f9d134b5172f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crossButton: {fileID: 1041200825072168939, guid: 2d604d7e6d0a7524094e74b0bc10d537, type: 3}
+  startButton: {fileID: 0}
+  endButton: {fileID: 0}
   buttonsGrid: {fileID: 1440776484}
   rectTransform: {fileID: 1440776483}
   width: 0
   height: 0
+  unselectedColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedStartColor: {r: 0.01234436, g: 1, b: 0, a: 1}
+  selectedEndColor: {r: 0.07277221, g: 0.07058823, b: 1, a: 1}
+  pathColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1504538387
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1504538391}
+  - component: {fileID: 1504538393}
   - component: {fileID: 1504538392}
   - component: {fileID: 1504538390}
   - component: {fileID: 1504538389}
@@ -984,12 +992,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e3d69d34c296b4ea70f636fad98c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crossButton: {fileID: 1041200825072168939, guid: 2d604d7e6d0a7524094e74b0bc10d537, type: 3}
   inputFieldX: {fileID: 1188919173}
   inputFieldY: {fileID: 1509904291}
   widthCross: 0
   heightCross: 0
   buttonsHolder: {fileID: 1440776487}
+--- !u!114 &1504538393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504538387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b648863422d04f4f82c44e9deb51489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 1440776487}
+  cross: {fileID: 1504538392}
 --- !u!1 &1509904289
 GameObject:
   m_ObjectHideFlags: 0

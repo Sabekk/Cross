@@ -5,20 +5,87 @@ using UnityEngine.UI;
 
 public class Grid : MonoBehaviour {
 
+    public Pathfinding pathfinding;
+
+    public CrossButton crossButton;
+
     public CrossButton startButton;
     public CrossButton endButton;
 
-    public Dictionary<int[], CrossButton> buttonsDictionary = new Dictionary<int[], CrossButton>();
+    public Dictionary<Tuple<int, int>, CrossButton> buttonsDictionary = new Dictionary<Tuple<int, int>, CrossButton>();
+    public List<CrossButton> path;
 
     public GridLayoutGroup buttonsGrid;
     public RectTransform rectTransform;
     public float width;
     public float height;
 
+    public Color unselectedColor;
+    public Color selectedStartColor;
+    public Color selectedEndColor;
+    public Color pathColor;
+
     private void Start()
     {
         width = rectTransform.rect.width;
         height = rectTransform.rect.height;
+    }
+
+    public struct Tuple<T1, T2> {
+        public readonly T1 Item1;
+        public readonly T2 Item2;
+
+        public Tuple(T1 item1, T2 item2)
+        {
+            Item1 = item1;
+            Item2 = item2;
+        }
+    }
+
+    public void SetButton(CrossButton button)
+    {
+        CrossButton tmp;
+        if(buttonsDictionary.TryGetValue(button.GetPosition(), out tmp))
+        {
+            Debug.Log("Jest");
+        }
+        else
+        {
+            Debug.Log("Nie ma");
+        }
+
+        if (startButton == null)
+        {
+            startButton = button;
+            startButton.SetColor(selectedStartColor);
+        }
+        else
+        {
+            if(startButton== button)
+            {
+                startButton.SetColor(unselectedColor);
+                startButton = null;
+                path.Clear();
+            }
+            else
+            {
+                if (endButton == null)
+                {
+                    endButton = button;
+                    endButton.SetColor(selectedEndColor);
+                    path = pathfinding.FindPath(startButton.posX, startButton.posY, endButton.posX, endButton.posY);
+                }
+                else
+                {
+                    if (endButton == button)
+                    {
+                        endButton.SetColor(unselectedColor);
+                        endButton = null;
+                        path.Clear();
+                    }
+                }
+            }
+        }
     }
 
     public void SetCellSize(float x, float y)
@@ -33,7 +100,9 @@ public class Grid : MonoBehaviour {
         {
             for (int j = 0; j < widthCount; j++)
             {
-                CrossButton spawnedButton = Instantiate(new CrossButton(this, i, j), transform);
+                CrossButton spawnedButton = crossButton;
+                spawnedButton.SetButtonValues(this, i, j);
+                Instantiate(spawnedButton, transform);
                 buttonsDictionary.Add(spawnedButton.GetPosition(), spawnedButton);
             }
         }

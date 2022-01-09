@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Cross : MonoBehaviour
 {
-    public CrossButton crossButton;
-
     public InputField inputFieldX;
     public InputField inputFieldY;
 

@@ -11,12 +11,12 @@ public class Pathfinding : MonoBehaviour {
 
     public Grid grid;
     public Cross cross;
-    public List<CrossButton> openList;
-    public List<CrossButton> closedList;
-    public List<CrossButton> FindPath(CrossButton startPosition, CrossButton endPosition)
+    public List<NodeButton> openList;
+    public List<NodeButton> closedList;
+    public List<NodeButton> FindPath(NodeButton startPosition, NodeButton endPosition)
     {
-        openList = new List<CrossButton> { startPosition };
-        closedList = new List<CrossButton>();
+        openList = new List<NodeButton> { startPosition };
+        closedList = new List<NodeButton>();
 
         foreach (var item in grid.buttonsDictionary.Values)
         {
@@ -32,7 +32,7 @@ public class Pathfinding : MonoBehaviour {
 
         while (openList.Count > 0)
         {
-            CrossButton curretPosition = GetLowestFCostPosition(openList);
+            NodeButton curretPosition = GetLowestFCostPosition(openList);
 
             if (curretPosition == endPosition)
             {
@@ -42,7 +42,7 @@ public class Pathfinding : MonoBehaviour {
             openList.Remove(curretPosition);
             closedList.Add(curretPosition);
 
-            foreach (CrossButton neighbour in GetNeighbourList(curretPosition))
+            foreach (NodeButton neighbour in GetNeighbourList(curretPosition))
             {
                 if (closedList.Contains(neighbour))
                 {
@@ -73,9 +73,9 @@ public class Pathfinding : MonoBehaviour {
         return null;
     }
 
-    public List<CrossButton> GetNeighbourList(CrossButton curretPosition)
+    public List<NodeButton> GetNeighbourList(NodeButton curretPosition)
     {
-        List<CrossButton> neighbourList = new List<CrossButton>();
+        List<NodeButton> neighbourList = new List<NodeButton>();
 
         if (curretPosition.posX - 1 >= 1)
         {
@@ -114,11 +114,11 @@ public class Pathfinding : MonoBehaviour {
         return neighbourList;
     }
 
-    public List<CrossButton> CalculatedPath(CrossButton endPosition)
+    public List<NodeButton> CalculatedPath(NodeButton endPosition)
     {
-        List<CrossButton> path = new List<CrossButton>();
+        List<NodeButton> path = new List<NodeButton>();
         //path.Add(endPosition);
-        CrossButton curretPosition = endPosition;
+        NodeButton curretPosition = endPosition;
         while (curretPosition.cameFrom != null)
         {
             path.Add(curretPosition.cameFrom);
@@ -128,7 +128,7 @@ public class Pathfinding : MonoBehaviour {
         return path;
     }
 
-    public int CalculateDistance(CrossButton a, CrossButton b)
+    public int CalculateDistance(NodeButton a, NodeButton b)
     {
         int distanceX = Mathf.Abs(a.posX - b.posX);
         int distanceY = Mathf.Abs(a.posY - b.posY);
@@ -137,9 +137,9 @@ public class Pathfinding : MonoBehaviour {
         return diagonal_cost * Mathf.Min(distanceX, distanceY) + straight_cost * remaining;
     }
 
-    public CrossButton GetLowestFCostPosition(List<CrossButton> positions)
+    public NodeButton GetLowestFCostPosition(List<NodeButton> positions)
     {
-        CrossButton lowestFCostPosition = positions[0];
+        NodeButton lowestFCostPosition = positions[0];
         for (int i = 1; i < positions.Count; i++)
         {
             if (positions[i].fCost < lowestFCostPosition.fCost)

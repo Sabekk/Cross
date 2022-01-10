@@ -7,13 +7,13 @@ public class Grid : MonoBehaviour {
 
     public Pathfinding pathfinding;
 
-    public CrossButton crossButton;
+    public NodeButton crossButton;
 
-    public CrossButton startButton;
-    public CrossButton endButton;
+    public NodeButton startButton;
+    public NodeButton endButton;
 
-    public Dictionary<Tuple<int, int>, CrossButton> buttonsDictionary = new Dictionary<Tuple<int, int>, CrossButton>();
-    public List<CrossButton> path;
+    public Dictionary<Tuple<int, int>, NodeButton> buttonsDictionary = new Dictionary<Tuple<int, int>, NodeButton>();
+    public List<NodeButton> path;
 
     public GridLayoutGroup buttonsGrid;
     public RectTransform rectTransform;
@@ -45,7 +45,7 @@ public class Grid : MonoBehaviour {
         }
     }
 
-    public void SetButton(CrossButton button)
+    public void SetButton(NodeButton button)
     {
         if (startButton == null)
         {
@@ -114,7 +114,7 @@ public class Grid : MonoBehaviour {
         {
             for (int j = 1; j <= widthCount; j++)
             {
-                CrossButton spawnedButton = Instantiate(crossButton, transform);
+                NodeButton spawnedButton = Instantiate(crossButton, transform);
                 spawnedButton.SetButtonValues(this, j, i);
                 var key = new Tuple<int, int>(spawnedButton.posX, spawnedButton.posY);
                 buttonsDictionary.Add(key, spawnedButton);
@@ -126,7 +126,7 @@ public class Grid : MonoBehaviour {
 
         while (disableButtonsCount > 0)
         {
-            CrossButton randomButton = GetButton(rand.Next(widthCount), rand.Next(heightCount));
+            NodeButton randomButton = GetButton(rand.Next(widthCount), rand.Next(heightCount));
             if (randomButton != null)
             {
                 randomButton.SetDisabled();
@@ -136,8 +136,8 @@ public class Grid : MonoBehaviour {
 
             if (disableButtonsCount > 0 && randomButton != null)
             {
-                List<CrossButton> neighbours = pathfinding.GetNeighbourList(randomButton);
-                CrossButton randomNeighbour = neighbours[rand.Next(0, neighbours.Count)];
+                List<NodeButton> neighbours = pathfinding.GetNeighbourList(randomButton);
+                NodeButton randomNeighbour = neighbours[rand.Next(0, neighbours.Count)];
                 if (randomNeighbour != null)
                 {
                     randomNeighbour.SetDisabled();
@@ -190,9 +190,9 @@ public class Grid : MonoBehaviour {
         buttonsDictionary.Clear();
     }
 
-    public CrossButton GetButton(int x, int y)
+    public NodeButton GetButton(int x, int y)
     {
-        CrossButton button;
+        NodeButton button;
         var key = new Tuple<int, int>(x, y);
 
         if (buttonsDictionary.TryGetValue(key, out button))

@@ -4,26 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CrossButton : MonoBehaviour
+public class NodeButton : MonoBehaviour, IButton
 {
-    public CrossButton(Grid grid, int x, int y)
-    {
-        this.grid = grid;
-        posX = x;
-        posY = y;
-        isAvalilable = true;
-    }
 
-    public int gCost;
-    public int hCost;
-    public int fCost;
-    public Grid grid;
-    public int posX;
-    public int posY;
-    public bool isAvalilable;
+    public int gCost { get; set; }
+    public int hCost { get; set; }
+    public int fCost { get; set; }
+    public Grid grid { get; set; }
+    public int posX { get; set; }
+    public int posY { get; set; }
+    public bool isAvalilable { get; set; }
+
+    public NodeButton cameFrom { get; set; }
+
     public Text buttonText;
-
-    public CrossButton cameFrom;
     public Image buttonImage;
 
     public void CalculateFCost()

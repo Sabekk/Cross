@@ -26,8 +26,6 @@ public class Grid : MonoBehaviour {
     public Color selectedEndColor;
     public Color pathColor;
 
-    public bool spawned;
-
     private void Start()
     {
         width = rectTransform.rect.width;
@@ -107,7 +105,6 @@ public class Grid : MonoBehaviour {
 
     public void SpawnButtons(int widthCount, int heightCount)
     {
-        spawned = false;
         int disableButtonsCount = (int)((widthCount * heightCount) * 0.1f);
 
         for (int i = 1; i <= heightCount; i++)
@@ -164,8 +161,8 @@ public class Grid : MonoBehaviour {
         {
             Debug.Log("Path not found");
         }
-        
     }
+
     public void ClearPath()
     {
         if (path != null)

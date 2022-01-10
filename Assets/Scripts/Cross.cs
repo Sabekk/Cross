@@ -33,8 +33,5 @@ public class Cross : MonoBehaviour
         }
 
         buttonsHolder.SpawnButtons(widthCross, heightCross);
-
-        int disableCount = (int)((widthCross * heightCross) * 0.1f);
-        buttonsHolder.SetDisabledButtons(disableCount);
     }
 }

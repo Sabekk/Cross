@@ -26,6 +26,8 @@ public class Grid : MonoBehaviour {
     public Color selectedEndColor;
     public Color pathColor;
 
+    public bool spawned;
+
     private void Start()
     {
         width = rectTransform.rect.width;
@@ -57,6 +59,13 @@ public class Grid : MonoBehaviour {
                     ShowPath();
                 }
             }
+            else
+            {
+                endButton.SetColor(unselectedColor);
+                endButton.HideButtonPosition();
+                endButton = null;
+                return;
+            }
         }
         else
         {
@@ -69,7 +78,7 @@ public class Grid : MonoBehaviour {
             }
             else
             {
-                if (endButton == null /*&& button != startButton*/)
+                if (endButton == null)
                 {
                     endButton = button;
                     endButton.SetColor(selectedEndColor);
@@ -98,6 +107,9 @@ public class Grid : MonoBehaviour {
 
     public void SpawnButtons(int widthCount, int heightCount)
     {
+        spawned = false;
+        int disableButtonsCount = (int)((widthCount * heightCount) * 0.1f);
+
         for (int i = 0; i < heightCount; i++)
         {
             for (int j = 0; j < widthCount; j++)
@@ -107,27 +119,33 @@ public class Grid : MonoBehaviour {
                 var key = new Tuple<int, int>(spawnedButton.posX, spawnedButton.posY);
                 buttonsDictionary.Add(key, spawnedButton);
             }
-        }       
-    }
+        }
 
-    public void SetDisabledButtons(int disableButtonsCount)
-    {
+
         System.Random rand = new System.Random();
 
         while (disableButtonsCount > 0)
         {
-            CrossButton randomButton = GetButton(rand.Next(0, buttonsDictionary.Count), rand.Next(0, buttonsDictionary.Count));
-            randomButton.SetDisabled();
-            disableButtonsCount--;
-
-            if (disableButtonsCount > 0)
+            CrossButton randomButton = GetButton(rand.Next(widthCount), rand.Next(heightCount));
+            if (randomButton != null)
             {
-                List<CrossButton> neighbours = pathfinding.GetNeighbourList(randomButton);
-                CrossButton randomNeighbour = neighbours[rand.Next(0, neighbours.Count)];
-                randomNeighbour.SetDisabled();
+                randomButton.SetDisabled();
                 disableButtonsCount--;
             }
 
+
+            if (disableButtonsCount > 0 && randomButton != null)
+            {
+                List<CrossButton> neighbours = pathfinding.GetNeighbourList(randomButton);
+                CrossButton randomNeighbour = neighbours[rand.Next(0, neighbours.Count)];
+                if (randomNeighbour != null)
+                {
+                    randomNeighbour.SetDisabled();
+                    disableButtonsCount--;
+
+                }
+
+            }
         }
     }
 
@@ -173,7 +191,7 @@ public class Grid : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Position not found");
+            Debug.Log("Position not found: " + x + ", " + y);
             return null;
         }
     }

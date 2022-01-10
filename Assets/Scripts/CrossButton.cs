@@ -21,6 +21,7 @@ public class CrossButton : MonoBehaviour
     public int posX;
     public int posY;
     public bool isAvalilable;
+    public Text buttonText;
 
     public CrossButton cameFrom;
     public Image buttonImage;
@@ -30,16 +31,25 @@ public class CrossButton : MonoBehaviour
         fCost = gCost + hCost;
     }
 
-    //public int[] GetPosition()
-    //{
-    //    int[] position = { posX, posY };
+    public void ShowButtonPosition()
+    {
+        buttonText.text = posX + " , " + posY;
+        buttonText.gameObject.SetActive(true);
+    }
+    public void ShowButtonPosition(int pos)
+    {
+        buttonText.text = posX + " , " + posY + " {" + pos +"} ";
+        buttonText.gameObject.SetActive(true);
+    }
 
-    //    return position;
-    //}
+    public void HideButtonPosition()
+    {
+        buttonText.gameObject.SetActive(false);
+    }
 
     public void SetButtonOnGrid()
     {
-        grid.SetButton(this);   
+        grid.SetButton(this);
     }
     
     public void SetButtonValues(Grid grid, int x, int y)
@@ -54,5 +64,11 @@ public class CrossButton : MonoBehaviour
     public void SetColor(Color newColor)
     {
         buttonImage.color = newColor;
+    }
+
+    public void SetDisabled()
+    {
+        isAvalilable = false;
+        SetColor(grid.disabledColor);
     }
 }

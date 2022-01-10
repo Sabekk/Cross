@@ -21,6 +21,7 @@ public class Grid : MonoBehaviour {
     public float height;
 
     public Color unselectedColor;
+    public Color disabledColor;
     public Color selectedStartColor;
     public Color selectedEndColor;
     public Color pathColor;
@@ -46,32 +47,43 @@ public class Grid : MonoBehaviour {
     {
         if (startButton == null)
         {
-            startButton = button;
-            startButton.SetColor(selectedStartColor);
+            if (button != endButton)
+            {
+                startButton = button;
+                startButton.SetColor(selectedStartColor);
+                startButton.ShowButtonPosition();
+                if (path.Count == 0 && endButton != null)
+                {
+                    ShowPath();
+                }
+            }
         }
         else
         {
-            if(startButton== button)
+            if (startButton == button)
             {
                 startButton.SetColor(unselectedColor);
+                startButton.HideButtonPosition();
                 startButton = null;
-                path.Clear();
+                ClearPath();
             }
             else
             {
-                if (endButton == null)
+                if (endButton == null /*&& button != startButton*/)
                 {
                     endButton = button;
                     endButton.SetColor(selectedEndColor);
-                    path = pathfinding.FindPath(startButton, endButton);
+                    endButton.ShowButtonPosition();
+                    ShowPath();
                 }
                 else
                 {
                     if (endButton == button)
                     {
                         endButton.SetColor(unselectedColor);
+                        endButton.HideButtonPosition();
                         endButton = null;
-                        path.Clear();
+                        ClearPath();
                     }
                 }
             }
@@ -90,13 +102,55 @@ public class Grid : MonoBehaviour {
         {
             for (int j = 0; j < widthCount; j++)
             {
-                CrossButton spawnedButton = crossButton;
+                CrossButton spawnedButton = Instantiate(crossButton, transform);
                 spawnedButton.SetButtonValues(this, i, j);
-                Instantiate(spawnedButton, transform);
                 var key = new Tuple<int, int>(spawnedButton.posX, spawnedButton.posY);
                 buttonsDictionary.Add(key, spawnedButton);
             }
+        }       
+    }
+
+    public void SetDisabledButtons(int disableButtonsCount)
+    {
+        System.Random rand = new System.Random();
+
+        while (disableButtonsCount > 0)
+        {
+            CrossButton randomButton = GetButton(rand.Next(0, buttonsDictionary.Count), rand.Next(0, buttonsDictionary.Count));
+            randomButton.SetDisabled();
+            disableButtonsCount--;
+
+            if (disableButtonsCount > 0)
+            {
+                List<CrossButton> neighbours = pathfinding.GetNeighbourList(randomButton);
+                CrossButton randomNeighbour = neighbours[rand.Next(0, neighbours.Count)];
+                randomNeighbour.SetDisabled();
+                disableButtonsCount--;
+            }
+
         }
+    }
+
+    public void ShowPath()
+    {
+        path = pathfinding.FindPath(startButton, endButton);
+
+        for (int i = 1; i < path.Count; i++)
+        {
+            path[i].SetColor(pathColor);
+            path[i].ShowButtonPosition(i);
+        }
+    }
+    public void ClearPath()
+    {
+        for (int i = 1; i < path.Count; i++)
+        {
+            path[i].SetColor(unselectedColor);
+            path[i].HideButtonPosition();
+        }
+        pathfinding.openList.Clear();
+        pathfinding.closedList.Clear();
+        path.Clear();
     }
 
     public void ClearHolder()

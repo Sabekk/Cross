@@ -13,7 +13,6 @@ public class Pathfinding : MonoBehaviour {
     public Cross cross;
     public List<CrossButton> openList;
     public List<CrossButton> closedList;
-    public List<CrossButton> neighbourList = new List<CrossButton>();
     public List<CrossButton> FindPath(CrossButton startPosition, CrossButton endPosition)
     {
         openList = new List<CrossButton> { startPosition };
@@ -34,7 +33,6 @@ public class Pathfinding : MonoBehaviour {
         while (openList.Count > 0)
         {
             CrossButton curretPosition = GetLowestFCostPosition(openList);
-            Debug.Log("curretPosition pos: " + curretPosition.posX + " , " + curretPosition.posY);
 
             if (curretPosition == endPosition)
             {
@@ -50,13 +48,11 @@ public class Pathfinding : MonoBehaviour {
                 {
                     continue;
                 }
-                //if (!neighbour.isAvalilable)
-                //{
-                //    closedList.Add(neighbour);
-                //    continue;
-                //}
-
-                Debug.Log("neighbour pos: " + neighbour.posX + " , " + neighbour.posY);
+                if (!neighbour.isAvalilable)
+                {
+                    closedList.Add(neighbour);
+                    continue;
+                }
 
                 int tentativeGCost = curretPosition.gCost + CalculateDistance(curretPosition, neighbour);
 
@@ -79,8 +75,7 @@ public class Pathfinding : MonoBehaviour {
 
     public List<CrossButton> GetNeighbourList(CrossButton curretPosition)
     {
-        neighbourList.Clear();
-        Debug.Log("Curret position to neigbers: " + curretPosition.posX + ", " + curretPosition.posY);
+        List<CrossButton> neighbourList = new List<CrossButton>();
 
         if (curretPosition.posX - 1 >= 0)
         {
@@ -122,7 +117,7 @@ public class Pathfinding : MonoBehaviour {
     public List<CrossButton> CalculatedPath(CrossButton endPosition)
     {
         List<CrossButton> path = new List<CrossButton>();
-        path.Add(endPosition);
+        //path.Add(endPosition);
         CrossButton curretPosition = endPosition;
         while (curretPosition.cameFrom != null)
         {

@@ -49,7 +49,10 @@ public class CrossButton : MonoBehaviour
 
     public void SetButtonOnGrid()
     {
-        grid.SetButton(this);
+        if (isAvalilable)
+        {
+            grid.SetButton(this);
+        }
     }
     
     public void SetButtonValues(Grid grid, int x, int y)

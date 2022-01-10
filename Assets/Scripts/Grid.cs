@@ -115,7 +115,7 @@ public class Grid : MonoBehaviour {
             for (int j = 1; j <= widthCount; j++)
             {
                 CrossButton spawnedButton = Instantiate(crossButton, transform);
-                spawnedButton.SetButtonValues(this, i, j);
+                spawnedButton.SetButtonValues(this, j, i);
                 var key = new Tuple<int, int>(spawnedButton.posX, spawnedButton.posY);
                 buttonsDictionary.Add(key, spawnedButton);
             }
@@ -126,7 +126,7 @@ public class Grid : MonoBehaviour {
 
         while (disableButtonsCount > 0)
         {
-            CrossButton randomButton = GetButton(rand.Next(heightCount), rand.Next(widthCount));
+            CrossButton randomButton = GetButton(rand.Next(widthCount), rand.Next(heightCount));
             if (randomButton != null)
             {
                 randomButton.SetDisabled();

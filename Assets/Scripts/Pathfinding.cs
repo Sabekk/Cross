@@ -77,36 +77,36 @@ public class Pathfinding : MonoBehaviour {
     {
         List<CrossButton> neighbourList = new List<CrossButton>();
 
-        if (curretPosition.posX - 1 >= 0)
+        if (curretPosition.posX - 1 >= 1)
         {
             neighbourList.Add(grid.GetButton(curretPosition.posX - 1, curretPosition.posY));
 
-            if (curretPosition.posY - 1 >= 0)
+            if (curretPosition.posY - 1 >= 1)
             {
                 neighbourList.Add(grid.GetButton(curretPosition.posX - 1, curretPosition.posY - 1));
             }
-            if (curretPosition.posY + 1 < cross.heightCross)
+            if (curretPosition.posY + 1 <= cross.heightCross)
             {
                 neighbourList.Add(grid.GetButton(curretPosition.posX - 1, curretPosition.posY + 1));
             }
         }
-        if (curretPosition.posX + 1 < cross.widthCross)
+        if (curretPosition.posX + 1 <= cross.widthCross)
         {
             neighbourList.Add(grid.GetButton(curretPosition.posX + 1, curretPosition.posY));
-            if (curretPosition.posY - 1 >= 0)
+            if (curretPosition.posY - 1 >= 1)
             {
                 neighbourList.Add(grid.GetButton(curretPosition.posX + 1, curretPosition.posY - 1));
             }
-            if (curretPosition.posY + 1 < cross.heightCross)
+            if (curretPosition.posY + 1 <= cross.heightCross)
             {
                 neighbourList.Add(grid.GetButton(curretPosition.posX + 1, curretPosition.posY + 1));
             }
         }
-        if (curretPosition.posY - 1 >= 0)
+        if (curretPosition.posY - 1 >= 1)
         {
             neighbourList.Add(grid.GetButton(curretPosition.posX, curretPosition.posY - 1));
         }
-        if (curretPosition.posY + 1 < cross.heightCross)
+        if (curretPosition.posY + 1 <= cross.heightCross)
         {
             neighbourList.Add(grid.GetButton(curretPosition.posX, curretPosition.posY + 1));
         }

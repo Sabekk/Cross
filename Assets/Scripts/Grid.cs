@@ -110,9 +110,9 @@ public class Grid : MonoBehaviour {
         spawned = false;
         int disableButtonsCount = (int)((widthCount * heightCount) * 0.1f);
 
-        for (int i = 0; i < heightCount; i++)
+        for (int i = 1; i <= heightCount; i++)
         {
-            for (int j = 0; j < widthCount; j++)
+            for (int j = 1; j <= widthCount; j++)
             {
                 CrossButton spawnedButton = Instantiate(crossButton, transform);
                 spawnedButton.SetButtonValues(this, i, j);
@@ -126,7 +126,7 @@ public class Grid : MonoBehaviour {
 
         while (disableButtonsCount > 0)
         {
-            CrossButton randomButton = GetButton(rand.Next(widthCount), rand.Next(heightCount));
+            CrossButton randomButton = GetButton(rand.Next(heightCount), rand.Next(widthCount));
             if (randomButton != null)
             {
                 randomButton.SetDisabled();
@@ -144,7 +144,6 @@ public class Grid : MonoBehaviour {
                     disableButtonsCount--;
 
                 }
-
             }
         }
     }
@@ -153,22 +152,33 @@ public class Grid : MonoBehaviour {
     {
         path = pathfinding.FindPath(startButton, endButton);
 
-        for (int i = 1; i < path.Count; i++)
+        if (path != null)
         {
-            path[i].SetColor(pathColor);
-            path[i].ShowButtonPosition(i);
+            for (int i = 1; i < path.Count; i++)
+            {
+                path[i].SetColor(pathColor);
+                path[i].ShowButtonPosition(i);
+            }
         }
+        else
+        {
+            Debug.Log("Path not found");
+        }
+        
     }
     public void ClearPath()
     {
-        for (int i = 1; i < path.Count; i++)
+        if (path != null)
         {
-            path[i].SetColor(unselectedColor);
-            path[i].HideButtonPosition();
+            for (int i = 1; i < path.Count; i++)
+            {
+                path[i].SetColor(unselectedColor);
+                path[i].HideButtonPosition();
+            }
+            pathfinding.openList.Clear();
+            pathfinding.closedList.Clear();
+            path.Clear();
         }
-        pathfinding.openList.Clear();
-        pathfinding.closedList.Clear();
-        path.Clear();
     }
 
     public void ClearHolder()
@@ -191,7 +201,6 @@ public class Grid : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Position not found: " + x + ", " + y);
             return null;
         }
     }
